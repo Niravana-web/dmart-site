@@ -2,7 +2,7 @@
 export const site = {
   name: "DMart",
   legalName: "Shree Annapurna LLC DBA DMart",
-  tagline: "Farm Fresh Produce, Certified Halal Meats",
+  tagline: "Farm Fresh Produce, Meats Cut to Order",
   domain: "https://www.dmartbrandon.com",
   address: {
     street: "2020 W Brandon Blvd, Suite 109",

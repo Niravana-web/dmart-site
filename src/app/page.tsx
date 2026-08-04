@@ -12,7 +12,7 @@ import { site } from "@/lib/site";
 const tickerItems = [
   "Cut fresh. Packed cold. Under one roof.",
   "Fresh goat & chicken arrive Tuesday & Thursday",
-  "Halal, as promised",
+  "Fresh, as promised",
   "2020 W Brandon Blvd, Suite 109 · Brandon, FL",
   "WhatsApp ahead — we’ll keep your cut ready",
 ];
@@ -35,10 +35,6 @@ const faqs = [
   {
     q: "Do you deliver or take orders online?",
     a: "DMart is a walk-in market — the counter is the experience. A small set of everyday essentials is available for takeout pickup through our Toast page, but the full shop lives at 2020 W Brandon Blvd.",
-  },
-  {
-    q: "Is your meat halal?",
-    a: "Yes — all of our meat is halal, sourced from certified halal suppliers and vendors. Checked, not just claimed.",
   },
   {
     q: "Can I order a cut ahead of time?",
@@ -109,14 +105,14 @@ export default function Home() {
           <div className="absolute inset-0 flex flex-col items-start justify-end p-7 pb-14 md:p-16 md:pb-20">
             <Reveal delay={0.35} y={22}>
               <p className="eyebrow !text-copper-300">
-                Halal Butcher &amp; Grocery · Brandon, Florida
+                Fresh Meats &amp; Grocery · Brandon, Florida
               </p>
             </Reveal>
             <Reveal delay={0.5} y={26}>
               <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-poppins)] text-4xl font-bold leading-[1.06] tracking-[-0.01em] text-cream-50 sm:text-6xl md:text-7xl">
                 Freshness you can see.{" "}
                 <span className="copper-text font-[family-name:var(--font-playfair)] italic">
-                  Halal
+                  Quality
                 </span>{" "}
                 you can trust.
               </h1>
@@ -200,13 +196,12 @@ export default function Home() {
                 className="object-cover"
               />
             </div>
-            {/* Halal trust badge — design.md §9 */}
             <div className="absolute -bottom-5 left-6 flex items-center gap-3 rounded-full bg-emerald-950/95 py-3 pl-4 pr-6 shadow-lg backdrop-blur">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-halal-gold text-halal-gold">
-                ☾
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-gold text-brand-gold">
+                ❋
               </span>
               <span className="font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.14em] text-cream-50">
-                Halal, as promised
+                Fresh, as promised
               </span>
             </div>
           </Parallax>
@@ -229,7 +224,7 @@ export default function Home() {
               <p className="mt-7 max-w-lg leading-relaxed text-cream-100/85">
                 Premium goat is cut to order, the way your dish asks for it.
                 Chicken and ground meats sit packed cold in the case for
-                grab-and-go speed. Our meats come from certified halal suppliers
+                grab-and-go speed. Our meats come from trusted certified suppliers
                 — checked, not just claimed.
               </p>
             </Reveal>
@@ -352,7 +347,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-950 via-emerald-950/80 to-emerald-950/30" />
         <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-36">
           <Reveal>
-            <p className="eyebrow !text-halal-gold">Ramadan &amp; Eid</p>
+            <p className="eyebrow !text-brand-gold">Ramadan &amp; Eid</p>
             <h2 className="mt-4 max-w-xl font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-cream-50 md:text-5xl">
               The table that matters most, arranged ahead
             </h2>
@@ -525,7 +520,7 @@ export default function Home() {
                 DMart
               </p>
               <p className="mt-2 max-w-xs text-sm leading-relaxed text-cream-100/60">
-                {site.tagline}. A neighborhood halal market on West Brandon
+                {site.tagline}. A neighborhood market on West Brandon
                 Blvd.
               </p>
             </div>
@@ -599,7 +594,7 @@ export default function Home() {
               © {new Date().getFullYear()} {site.legalName}. All rights
               reserved.
             </p>
-            <p>Freshness you can see. Halal you can trust.</p>
+            <p>Freshness you can see. Quality you can trust.</p>
           </div>
         </div>
       </footer>

@@ -25,18 +25,18 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(site.domain),
   title: {
-    default: "DMart Brandon — Halal Meat Market & Indian Grocery in Brandon, FL",
+    default: "DMart Brandon — Fresh Meat Market & Indian Grocery in Brandon, FL",
     template: "%s · DMart Brandon",
   },
   description:
-    "Halal meats cut to order, farm-fresh produce, and over 900 pantry staples and spices — under one roof at 2020 W Brandon Blvd, Brandon, FL. Fresh goat and chicken arrive Tuesday and Thursday mornings.",
+    "Meats cut to order, farm-fresh produce, and over 900 pantry staples and spices — under one roof at 2020 W Brandon Blvd, Brandon, FL. Fresh goat and chicken arrive Tuesday and Thursday mornings.",
   keywords: [
-    "halal meat Brandon FL",
-    "halal butcher near me",
+    "meat market Brandon FL",
+    "butcher near me",
     "Indian grocery Brandon",
-    "halal grocery Tampa",
+    "Indian grocery Tampa",
     "goat meat Brandon",
-    "halal chicken Brandon FL",
+    "fresh chicken Brandon FL",
     "Middle Eastern grocery Brandon",
   ],
   alternates: { canonical: "/" },
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     type: "website",
     url: site.domain,
     siteName: "DMart Brandon",
-    title: "DMart Brandon — Freshness you can see. Halal you can trust.",
+    title: "DMart Brandon — Freshness you can see. Quality you can trust.",
     description:
-      "Halal meats cut to order, farm-fresh produce, and the spice aisle your recipes ask for — 2020 W Brandon Blvd, Brandon, FL.",
+      "Meats cut to order, farm-fresh produce, and the spice aisle your recipes ask for — 2020 W Brandon Blvd, Brandon, FL.",
     images: [{ url: "/images/hero.jpg", width: 1600, height: 900 }],
   },
   twitter: { card: "summary_large_image" },
@@ -59,7 +59,7 @@ const jsonLd = {
   name: "DMart",
   alternateName: site.legalName,
   description:
-    "Halal meat market and Indian & Middle Eastern grocery in Brandon, Florida. Meats cut to order at the counter, farm-fresh produce, pantry and spices.",
+    "Fresh meat market and Indian & Middle Eastern grocery in Brandon, Florida. Meats cut to order at the counter, farm-fresh produce, pantry and spices.",
   url: site.domain,
   telephone: site.phone,
   email: site.email,
@@ -79,7 +79,7 @@ const jsonLd = {
   paymentAccepted: "Cash, Credit Card",
   areaServed: site.areas.map((name) => ({ "@type": "City", name })),
   keywords:
-    "halal meat, halal butcher, goat cut to order, Indian grocery, Middle Eastern grocery, fresh produce, spices",
+    "meat cut to order, goat cut to order, Indian grocery, Middle Eastern grocery, fresh produce, spices",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
