@@ -12,7 +12,7 @@ export const site = {
   },
   phone: "+16562410641",
   phoneDisplay: "(656) 241-0641",
-  whatsapp: "https://wa.me/16562410641",
+  whatsapp: "https://wa.me/16562410641?text=Hi%20DMart!",
   whatsappGroup: "https://chat.whatsapp.com/KSc0xfPYnCDIIOVvHTNdPJ",
   maps: "https://maps.app.goo.gl/KbQ5Z5ZqET9Giftf7",
   toast:
