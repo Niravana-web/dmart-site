@@ -25,19 +25,20 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(site.domain),
   title: {
-    default: "DMart Brandon — Fresh Meat Market & Indian Grocery in Brandon, FL",
+    default: "DMart Brandon — Indian Grocery, Fresh Produce & Meat Market in Brandon, FL",
     template: "%s · DMart Brandon",
   },
   description:
-    "Meats cut to order, farm-fresh produce, and over 900 pantry staples and spices — under one roof at 2020 W Brandon Blvd, Brandon, FL. Fresh goat and chicken arrive Tuesday and Thursday mornings.",
+    "Farm-fresh produce, over 900 pantry staples and spices, fresh-made food, and meats cut to order — under one roof at 2020 W Brandon Blvd, Brandon, FL. Order essentials online for pickup.",
   keywords: [
-    "meat market Brandon FL",
-    "butcher near me",
     "Indian grocery Brandon",
     "Indian grocery Tampa",
-    "goat meat Brandon",
-    "fresh chicken Brandon FL",
+    "Indian store near me",
+    "fresh produce Brandon FL",
+    "spices Brandon FL",
     "Middle Eastern grocery Brandon",
+    "meat market Brandon FL",
+    "goat meat Brandon",
   ],
   alternates: { canonical: "/" },
   openGraph: {
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "DMart Brandon",
     title: "DMart Brandon — Freshness you can see. Quality you can trust.",
     description:
-      "Meats cut to order, farm-fresh produce, and the spice aisle your recipes ask for — 2020 W Brandon Blvd, Brandon, FL.",
+      "Farm-fresh produce, the spice aisle your recipes ask for, and meats cut to order — 2020 W Brandon Blvd, Brandon, FL.",
     images: [{ url: "/images/hero.jpg", width: 1600, height: 900 }],
   },
   twitter: { card: "summary_large_image" },
@@ -74,7 +75,7 @@ const jsonLd = {
     addressCountry: "US",
   },
   hasMap: site.maps,
-  sameAs: [site.maps],
+  sameAs: [site.maps, site.facebook, site.instagram],
   priceRange: "$$",
   paymentAccepted: "Cash, Credit Card",
   areaServed: site.areas.map((name) => ({ "@type": "City", name })),

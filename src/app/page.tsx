@@ -1,27 +1,29 @@
 import Image from "next/image";
 import { Nav } from "@/components/Nav";
+import { ContactForm } from "@/components/ContactForm";
+import { HeroVideos } from "@/components/HeroVideos";
 import {
   Reveal,
   Parallax,
-  HeroImage,
   CountUp,
   StaggerList,
 } from "@/components/motion";
 import { site } from "@/lib/site";
 
 const tickerItems = [
-  "Cut fresh. Packed cold. Under one roof.",
-  "Fresh goat & chicken arrive Tuesday & Thursday",
-  "Fresh, as promised",
+  "Farm-fresh produce, picked over daily",
+  "900+ pantry staples, spices, dals & atta",
+  "Fresh-made food from the kitchen counter",
+  "Order essentials online for pickup",
   "2020 W Brandon Blvd, Suite 109 · Brandon, FL",
-  "WhatsApp ahead — we’ll keep your cut ready",
+  "Meats cut to order at the counter",
 ];
 
 const stats = [
-  { n: 15, suffix: "", label: "butcher’s cuts at the counter" },
-  { n: 30, suffix: "+", label: "farm-fresh produce items" },
   { n: 900, suffix: "+", label: "pantry & spice staples" },
+  { n: 30, suffix: "+", label: "farm-fresh produce items" },
   { n: 90, suffix: "+", label: "dairy & frozen picks" },
+  { n: 15, suffix: "", label: "butcher’s cuts at the counter" },
 ];
 
 const cutChoices = [
@@ -33,8 +35,8 @@ const cutChoices = [
 
 const faqs = [
   {
-    q: "Do you deliver or take orders online?",
-    a: "DMart is a walk-in market — the counter is the experience. A small set of everyday essentials is available for takeout pickup through our Toast page, but the full shop lives at 2020 W Brandon Blvd.",
+    q: "Do you take orders online?",
+    a: "Yes — order everyday essentials and kitchen favorites for pickup through our Toast page, and they’ll be bagged and waiting. The full produce, pantry and butcher selection lives in the shop at 2020 W Brandon Blvd.",
   },
   {
     q: "Can I order a cut ahead of time?",
@@ -60,6 +62,107 @@ const faqJsonLd = {
   })),
 };
 
+const btnBase =
+  "inline-block rounded-full px-8 py-4 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-300 hover:scale-[1.04]";
+
+/** Primary call to action across the page — online ordering on Toast. */
+function ToastButton({ label, dark = false }: { label: string; dark?: boolean }) {
+  return (
+    <a
+      href={site.toast}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${btnBase} ${
+        dark
+          ? "bg-cream-100 text-emerald-900 hover:bg-cream-50"
+          : "bg-emerald-700 text-cream-50 hover:bg-emerald-900"
+      }`}
+    >
+      {label}
+    </a>
+  );
+}
+
+/**
+ * Entry splash — camera pushes through the storefront, then dissolves into the
+ * page: outside the shop, then inside. /Store.png is loaded for this alone now
+ * that the hero shows video, so it is the splash's true cost.
+ * Server-rendered with CSS-only animation: no JS to hydrate, nothing that can
+ * fail and leave a customer staring at a covered page.
+ */
+function Splash() {
+  return (
+    <div
+      aria-hidden
+      className="splash pointer-events-none fixed inset-0 z-[100] overflow-hidden bg-black"
+    >
+      <div className="splash-push absolute inset-0">
+        <Image
+          src="/Store.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
+      {/* No overlaid lockup — the storefront sign in the photo is the branding. */}
+      <div className="splash-vignette absolute inset-0" />
+    </div>
+  );
+}
+
+/**
+ * The shared green surface: deep emerald over a dimmed photo, so every dark
+ * section reads as textured rather than flat. Pass a different image per
+ * section — the gradient keeps them all the same weight regardless.
+ */
+function GreenPanel({
+  id,
+  image,
+  children,
+}: {
+  id?: string;
+  image: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className="relative overflow-hidden bg-emerald-950">
+      <div className="absolute inset-0 opacity-25">
+        <Parallax range={80} className="h-[120%]">
+          <Image src={image} alt="" fill sizes="100vw" className="object-cover" />
+        </Parallax>
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-950 via-emerald-950/90 to-emerald-950" />
+      <div className="relative">{children}</div>
+    </section>
+  );
+}
+
+function Social({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/25 text-cream-100/80 transition-all duration-300 hover:border-copper-300 hover:text-copper-300"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+        {children}
+      </svg>
+    </a>
+  );
+}
+
 function WhatsAppButton({ label, dark = false }: { label: string; dark?: boolean }) {
   return (
     <a
@@ -84,32 +187,20 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <Splash />
       <Nav />
 
       {/* ============ HERO ============ */}
-      <section className="relative px-3 pt-20 md:px-5 md:pt-24">
-        <div className="relative mx-auto h-[82vh] min-h-[560px] max-w-[1600px] overflow-hidden rounded-2xl">
-          <HeroImage>
-            <Image
-              src="/Store.png"
-              alt="The DMart storefront at 2020 W Brandon Blvd, Brandon, FL"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          </HeroImage>
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
-
-          <div className="absolute inset-0 flex flex-col items-start justify-end p-7 pb-14 md:p-16 md:pb-20">
-            <Reveal delay={0.35} y={22}>
-              <p className="eyebrow !text-copper-300">
-                Fresh Meats &amp; Grocery · Brandon, Florida
+      <section className="relative grain px-6 pt-24 pb-14 md:pt-36 md:pb-24">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-16">
+          <div>
+            <Reveal delay={0.15} y={22}>
+              <p className="eyebrow">
+                Indian Grocery, Fresh Produce &amp; Meats · Brandon, Florida
               </p>
             </Reveal>
-            <Reveal delay={0.5} y={26}>
-              <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-poppins)] text-4xl font-bold leading-[1.06] tracking-[-0.01em] text-cream-50 sm:text-6xl md:text-7xl">
+            <Reveal delay={0.28} y={26}>
+              <h1 className="mt-4 font-[family-name:var(--font-poppins)] text-4xl font-bold leading-[1.06] tracking-[-0.01em] text-emerald-900 sm:text-5xl md:text-6xl">
                 Freshness you can see.{" "}
                 <span className="copper-text font-[family-name:var(--font-playfair)] italic">
                   Quality
@@ -117,25 +208,36 @@ export default function Home() {
                 you can trust.
               </h1>
             </Reveal>
-            <Reveal delay={0.68} y={24}>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-cream-100/90">
-                Goat cut to your order at the counter, produce that still smells
-                of the farm, and the spice aisle your recipes ask for — under
-                one roof on West Brandon Blvd.
+            <Reveal delay={0.42} y={24}>
+              <div className="copper-divider mt-7 w-24" />
+              <p className="mt-7 max-w-lg text-lg leading-relaxed text-charcoal/80">
+                Produce that still smells of the farm, nine hundred pantry
+                staples and spices, fresh-made food from the kitchen — and a
+                butcher counter that cuts to your order. One roof, on West
+                Brandon Blvd.
               </p>
             </Reveal>
-            <Reveal delay={0.85} y={20}>
+            <Reveal delay={0.56} y={20}>
               <div className="mt-9 flex flex-wrap items-center gap-4">
-                <WhatsAppButton label="Tell us your cut" />
+                <ToastButton label="Order online" />
                 <a
-                  href="#visit"
-                  className="inline-block rounded-full border-2 border-copper-300/80 px-8 py-4 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.08em] text-cream-50 transition-all duration-300 hover:scale-[1.04] hover:border-copper-300 hover:bg-copper-300/10"
+                  href="#grocery"
+                  className={`${btnBase} border-2 border-copper-500 text-emerald-900 hover:bg-copper-300/20`}
                 >
-                  Plan your visit
+                  Shop the aisles
                 </a>
               </div>
+              <p className="mt-5 text-xs uppercase tracking-[0.14em] text-charcoal/50">
+                Pickup on Toast · or walk in daily
+              </p>
             </Reveal>
           </div>
+
+          {/* Grid item must stretch — justify-self would shrink it and collapse
+              the card's w-full to zero. Align the card with flex instead. */}
+          <Reveal delay={0.35} className="flex justify-center md:justify-end">
+            <HeroVideos />
+          </Reveal>
         </div>
       </section>
 
@@ -183,82 +285,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ THE COUNTER ============ */}
-      <section id="counter" className="emerald-panel relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:gap-20 md:py-32">
-          <Parallax range={40} className="relative">
-            <div className="card-img relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl shadow-emerald-950/40">
-              <Image
-                src="/images/meat.jpg"
-                alt="Trimmed goat curry cut arranged on butcher paper with mint and whole spices"
-                fill
-                sizes="(min-width: 768px) 45vw, 92vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-5 left-6 flex items-center gap-3 rounded-full bg-emerald-950/95 py-3 pl-4 pr-6 shadow-lg backdrop-blur">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-gold text-brand-gold">
-                ❋
-              </span>
-              <span className="font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.14em] text-cream-50">
-                Fresh, as promised
-              </span>
-            </div>
-          </Parallax>
-
-          <div>
-            <Reveal>
-              <p className="eyebrow !text-copper-300">The Counter</p>
-              <h2 className="mt-4 font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-cream-50 md:text-5xl">
-                Tell us your cut.
-                <br />
-                We’ll keep it{" "}
-                <span className="copper-text font-[family-name:var(--font-playfair)] italic">
-                  ready
-                </span>
-                .
-              </h2>
-              <div className="copper-divider mt-6 w-20" />
-            </Reveal>
-            <Reveal delay={0.15}>
-              <p className="mt-7 max-w-lg leading-relaxed text-cream-100/85">
-                Premium goat is cut to order, the way your dish asks for it.
-                Chicken and ground meats sit packed cold in the case for
-                grab-and-go speed. Our meats come from trusted certified suppliers
-                — checked, not just claimed.
-              </p>
-            </Reveal>
-            <StaggerList className="mt-9 max-w-md divide-y divide-cream-100/15 border-y border-cream-100/15">
-              {cutChoices.map((c) => (
-                <div
-                  key={c.k}
-                  className="flex items-baseline justify-between py-4"
-                >
-                  <span className="font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.12em] text-copper-300">
-                    {c.k}
-                  </span>
-                  <span className="text-cream-100/90">{c.v}</span>
-                </div>
-              ))}
-            </StaggerList>
-            <Reveal delay={0.2}>
-              <p className="mt-7 text-sm text-cream-100/70">
-                Fresh goat and chicken arrive {site.freshDays}.
-              </p>
-              <div className="mt-6">
-                <WhatsAppButton label="WhatsApp your cut ahead" dark />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       {/* ============ FRESH & GROCERY ============ */}
-      <section id="grocery" className="relative grain px-6 py-20 md:py-32">
-        <div className="mx-auto max-w-7xl">
+      <GreenPanel id="grocery" image="/images/hero.jpg">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:py-32">
           <Reveal>
-            <p className="eyebrow">Fresh &amp; Grocery</p>
-            <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-emerald-900 md:text-5xl">
+            <p className="eyebrow !text-copper-300">Fresh &amp; Grocery</p>
+            <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-cream-50 md:text-5xl">
               From the farm and the{" "}
               <span className="copper-text font-[family-name:var(--font-playfair)] italic">
                 spice
@@ -266,6 +298,11 @@ export default function Home() {
               road
             </h2>
             <div className="copper-divider mt-6 w-20" />
+            <p className="mt-7 max-w-2xl leading-relaxed text-cream-100/85">
+              The weekly grocery run, done properly. Produce picked over every
+              morning, the pantry aisle your recipes actually ask for, and a
+              kitchen counter turning out fresh food all day.
+            </p>
           </Reveal>
 
           <div className="mt-14 grid gap-8 md:grid-cols-3">
@@ -286,7 +323,7 @@ export default function Home() {
                 img: "/images/dish.jpg",
                 alt: "Steaming chicken biryani in a copper handi",
                 title: "From the Kitchen",
-                body: "Fresh-made food and grab-and-go favorites, for the evenings the family pot gets a night off.",
+                body: "Biryani, dosa, idli, vada, chaat and pizza made fresh at the counter — for the evenings the family pot gets a night off.",
               },
             ].map((c, i) => (
               <Reveal key={c.title} delay={i * 0.14}>
@@ -301,11 +338,11 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/50 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
                   </div>
-                  <h3 className="mt-6 font-[family-name:var(--font-poppins)] text-xl font-semibold text-emerald-900">
+                  <h3 className="mt-6 font-[family-name:var(--font-poppins)] text-xl font-semibold text-cream-50">
                     {c.title}
                   </h3>
                   <div className="copper-divider mt-3 w-10 transition-all duration-500 group-hover:w-20" />
-                  <p className="mt-4 leading-relaxed text-charcoal/75">{c.body}</p>
+                  <p className="mt-4 leading-relaxed text-cream-100/75">{c.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -316,55 +353,175 @@ export default function Home() {
               <p className="max-w-2xl leading-relaxed text-charcoal/80">
                 Plus a dairy and frozen aisle of ninety-some picks — paneer,
                 yogurts, kulfi, parathas — and local creameries alongside the
-                brands you grew up with.
+                brands you grew up with. Short on time? Put the everyday list on
+                Toast and collect it bagged.
               </p>
+              <ToastButton label="Order essentials online" />
+            </div>
+          </Reveal>
+        </div>
+      </GreenPanel>
+
+      {/* ============ THE COUNTER ============ */}
+      <section id="counter" className="relative grain overflow-hidden">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:gap-20 md:py-32">
+          <Parallax range={40} className="relative">
+            <div className="card-img relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl shadow-emerald-950/15">
+              <Image
+                src="/images/meat.jpg"
+                alt="Trimmed goat curry cut arranged on butcher paper with mint and whole spices"
+                fill
+                sizes="(min-width: 768px) 45vw, 92vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-5 left-6 flex items-center gap-3 rounded-full bg-emerald-950/95 py-3 pl-4 pr-6 shadow-lg backdrop-blur">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-gold text-brand-gold">
+                ❋
+              </span>
+              <span className="font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.14em] text-cream-50">
+                Fresh, as promised
+              </span>
+            </div>
+          </Parallax>
+
+          <div>
+            <Reveal>
+              <p className="eyebrow">The Counter</p>
+              <h2 className="mt-4 font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-emerald-900 md:text-5xl">
+                Tell us your cut.
+                <br />
+                We’ll keep it{" "}
+                <span className="copper-text font-[family-name:var(--font-playfair)] italic">
+                  ready
+                </span>
+                .
+              </h2>
+              <div className="copper-divider mt-6 w-20" />
+            </Reveal>
+            <Reveal delay={0.15}>
+              <p className="mt-7 max-w-lg leading-relaxed text-charcoal/80">
+                Premium goat is cut to order, the way your dish asks for it.
+                Chicken and ground meats sit packed cold in the case for
+                grab-and-go speed. Our meats come from trusted certified suppliers
+                — checked, not just claimed.
+              </p>
+            </Reveal>
+            <StaggerList className="mt-9 max-w-md divide-y divide-emerald-900/12 border-y border-emerald-900/12">
+              {cutChoices.map((c) => (
+                <div
+                  key={c.k}
+                  className="flex items-baseline justify-between py-4"
+                >
+                  <span className="font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.12em] text-copper-700">
+                    {c.k}
+                  </span>
+                  <span className="text-charcoal/80">{c.v}</span>
+                </div>
+              ))}
+            </StaggerList>
+            <Reveal delay={0.2}>
+              <p className="mt-7 text-sm text-charcoal/60">
+                Fresh goat and chicken arrive {site.freshDays}.
+              </p>
+              <div className="mt-6">
+                <WhatsAppButton label="WhatsApp your cut ahead" />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ GOOGLE REVIEWS ============ */}
+      <GreenPanel id="reviews" image="/images/festival.jpg">
+        <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <Reveal>
+            <p className="eyebrow text-center !text-brand-gold">
+              Word of mouth
+            </p>
+            <h2 className="mx-auto mt-4 max-w-2xl text-center font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-cream-50 md:text-4xl">
+              What the neighborhood{" "}
+              <span className="copper-text font-[family-name:var(--font-playfair)] italic">
+                says
+              </span>
+            </h2>
+            <div className="copper-divider mx-auto mt-6 w-24" />
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <span className="font-[family-name:var(--font-playfair)] text-5xl italic text-cream-50">
+                {site.googleRating}
+              </span>
+              <span className="h-10 w-px bg-cream-100/20" />
+              <span className="text-left">
+                <span
+                  className="block text-lg leading-none text-brand-gold"
+                  aria-hidden
+                >
+                  ★★★★<span className="text-cream-100/25">★</span>
+                </span>
+                <span className="mt-1.5 block text-sm text-cream-100/70">
+                  {site.googleReviewCount} reviews on Google
+                </span>
+              </span>
+            </div>
+          </Reveal>
+
+          {site.reviews.length > 0 && (
+            <div className="mt-14 grid gap-6 md:grid-cols-3">
+              {site.reviews.map((r, i) => (
+                <Reveal key={r.name} delay={i * 0.12}>
+                  <figure className="h-full rounded-2xl bg-cream-50/5 p-7 ring-1 ring-cream-100/15 backdrop-blur">
+                    <div
+                      className="text-brand-gold"
+                      aria-label={`${r.rating} out of 5 stars`}
+                    >
+                      {"★".repeat(r.rating)}
+                      <span className="text-cream-100/25">
+                        {"★".repeat(5 - r.rating)}
+                      </span>
+                    </div>
+                    <blockquote className="mt-4 leading-relaxed text-cream-100/85">
+                      “{r.text}”
+                    </blockquote>
+                    <figcaption className="mt-5 font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.14em] text-copper-300">
+                      {r.name}
+                      {r.badge && (
+                        <span className="text-cream-100/40"> · {r.badge}</span>
+                      )}
+                      <span className="text-cream-100/40"> · via Google</span>
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </div>
+          )}
+
+          <Reveal delay={0.2}>
+            <p className="mx-auto mt-12 max-w-lg text-center leading-relaxed text-cream-100/80">
+              Neighbors leave their honest notes on our Google listing — the
+              good mornings and the things we still owe them. Read them all,
+              and add yours after your next visit.
+            </p>
+            <div className="mt-9 flex flex-wrap justify-center gap-4">
               <a
-                href={site.toast}
+                href={site.reviewsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="draw-link shrink-0 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.1em] text-emerald-700"
+                className={`${btnBase} bg-cream-100 text-emerald-900 hover:bg-cream-50`}
               >
-                Essentials on Toast →
+                Read our Google reviews
+              </a>
+              <a
+                href={site.reviewsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${btnBase} border-2 border-copper-300/80 text-cream-50 hover:border-copper-300 hover:bg-copper-300/10`}
+              >
+                Leave a review
               </a>
             </div>
           </Reveal>
         </div>
-      </section>
-
-      {/* ============ EID / RAMADAN ============ */}
-      <section id="eid" className="relative overflow-hidden bg-emerald-950">
-        <div className="absolute inset-0 opacity-40">
-          <Parallax range={80} className="h-[120%]">
-            <Image
-              src="/images/festival.jpg"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover"
-            />
-          </Parallax>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950 via-emerald-950/80 to-emerald-950/30" />
-        <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-36">
-          <Reveal>
-            <p className="eyebrow !text-brand-gold">Ramadan &amp; Eid</p>
-            <h2 className="mt-4 max-w-xl font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-cream-50 md:text-5xl">
-              The table that matters most, arranged ahead
-            </h2>
-            <div className="copper-divider mt-6 w-20" />
-          </Reveal>
-          <Reveal delay={0.15}>
-            <p className="mt-7 max-w-lg leading-relaxed text-cream-100/85">
-              We take Eid and Ramadan pre-orders at the counter — bulk cuts,
-              prepared to your order and timed for collection, so the biggest
-              days of the year are the calmest ones in your kitchen.
-            </p>
-            <div className="mt-9">
-              <WhatsAppButton label="Ask about pre-orders" dark />
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      </GreenPanel>
 
       {/* ============ VISIT ============ */}
       <section id="visit" className="relative grain px-6 py-20 md:py-32">
@@ -398,13 +555,13 @@ export default function Home() {
                     href={site.maps}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block rounded-full bg-emerald-700 px-8 py-4 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.08em] text-cream-50 transition-all duration-300 hover:scale-[1.04] hover:bg-emerald-900"
+                    className={`${btnBase} bg-emerald-700 text-cream-50 hover:bg-emerald-900`}
                   >
                     Get directions
                   </a>
                   <a
                     href={`tel:${site.phone}`}
-                    className="inline-block rounded-full border-2 border-copper-500 px-8 py-4 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-[0.08em] text-emerald-900 transition-all duration-300 hover:scale-[1.04] hover:bg-copper-300/20"
+                    className={`${btnBase} border-2 border-copper-500 text-emerald-900 hover:bg-copper-300/20`}
                   >
                     Call {site.phoneDisplay}
                   </a>
@@ -458,7 +615,7 @@ export default function Home() {
                     </dt>
                     <dd className="mt-2 text-lg leading-snug">
                       <a
-                        href={site.maps}
+                        href={site.reviewsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="draw-link text-copper-300"
@@ -471,8 +628,77 @@ export default function Home() {
               </div>
             </Reveal>
           </div>
+
+          <Reveal delay={0.15}>
+            <div className="relative mt-14 overflow-hidden rounded-2xl shadow-xl shadow-emerald-950/10 ring-1 ring-emerald-900/10">
+              <iframe
+                src={site.mapEmbed}
+                title={`Map to ${site.name}, ${site.address.street}, ${site.address.city}`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+                className="block h-[340px] w-full border-0 md:h-[440px]"
+              />
+              <a
+                href={site.maps}
+                target="_blank"
+                rel="noopener noreferrer"
+                /* Top-right: keeps Google's attribution in the bottom corners clear. */
+                className="absolute right-5 top-5 rounded-full bg-emerald-900 px-6 py-3 font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.1em] text-cream-50 shadow-lg transition-all duration-300 hover:scale-[1.04] hover:bg-emerald-950"
+              >
+                Open in Google Maps
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
+
+      {/* ============ CONTACT ============ */}
+      <GreenPanel id="contact" image="/images/spices.jpg">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-[0.9fr_1.1fr] md:gap-16 md:py-28">
+          <Reveal>
+            <p className="eyebrow !text-copper-300">Contact Us</p>
+            <h2 className="mt-4 font-[family-name:var(--font-poppins)] text-3xl font-semibold leading-tight text-cream-50 md:text-4xl">
+              Ask us{" "}
+              <span className="copper-text font-[family-name:var(--font-playfair)] italic">
+                anything
+              </span>
+            </h2>
+            <div className="copper-divider mt-6 w-20" />
+            <p className="mt-7 max-w-sm leading-relaxed text-cream-100/85">
+              A special order, a product you can’t find, catering for a
+              gathering, or a note about your last visit — send it over and
+              we’ll write back.
+            </p>
+            <ul className="mt-8 space-y-3 text-sm text-cream-100/80">
+              <li>
+                <a href={`tel:${site.phone}`} className="draw-link">
+                  {site.phoneDisplay}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${site.email}`} className="draw-link">
+                  {site.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={site.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="draw-link"
+                >
+                  WhatsApp the counter
+                </a>
+              </li>
+            </ul>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <ContactForm />
+          </Reveal>
+        </div>
+      </GreenPanel>
 
       {/* ============ FAQ ============ */}
       <section className="border-t border-emerald-900/10 px-6 py-20 md:py-28">
@@ -509,20 +735,34 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
           <div className="grid gap-12 md:grid-cols-3">
             <div>
-              <Image
-                src="/logo-transparant.png"
-                alt="DMart leaf mark"
-                width={72}
-                height={72}
-                className="rounded-xl"
-              />
-              <p className="mt-5 font-[family-name:var(--font-poppins)] text-2xl font-bold">
-                DMart
+              <div className="flex items-center gap-3">
+                {/* Cream tile — the mark is dark green and vanishes on emerald. */}
+                <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-cream-50">
+                  <Image
+                    src="/logo-mark.png"
+                    alt="DMart leaf mark"
+                    width={48}
+                    height={48}
+                    className="h-11 w-11 object-contain"
+                  />
+                </span>
+                <p className="font-[family-name:var(--font-poppins)] text-3xl font-bold leading-none">
+                  DMart
+                </p>
+              </div>
+              <p className="mt-5 max-w-xs text-sm leading-relaxed text-cream-100/60">
+                {site.tagline}. A neighborhood market on West Brandon Blvd.
               </p>
-              <p className="mt-2 max-w-xs text-sm leading-relaxed text-cream-100/60">
-                {site.tagline}. A neighborhood market on West Brandon
-                Blvd.
-              </p>
+              <div className="mt-6 flex items-center gap-3">
+                <Social href={site.facebook} label="DMart on Facebook">
+                  <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z" />
+                </Social>
+                <Social href={site.instagram} label="DMart on Instagram">
+                  <path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8zm0 5.6a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4z" />
+                  <circle cx="15.7" cy="8.3" r=".9" />
+                  <path d="M16.5 3.5h-9A4 4 0 0 0 3.5 7.5v9a4 4 0 0 0 4 4h9a4 4 0 0 0 4-4v-9a4 4 0 0 0-4-4zm2.8 13a2.8 2.8 0 0 1-2.8 2.8h-9a2.8 2.8 0 0 1-2.8-2.8v-9a2.8 2.8 0 0 1 2.8-2.8h9a2.8 2.8 0 0 1 2.8 2.8v9z" />
+                </Social>
+              </div>
             </div>
             <div>
               <h3 className="font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.18em] text-copper-300">
@@ -557,6 +797,45 @@ export default function Home() {
               <ul className="mt-5 space-y-3 text-sm text-cream-100/80">
                 <li>
                   <a
+                    href={site.toast}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="draw-link"
+                  >
+                    Order online on Toast
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={site.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="draw-link"
+                  >
+                    Facebook
+                  </a>
+                  <span className="px-2 text-cream-100/30">·</span>
+                  <a
+                    href={site.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="draw-link"
+                  >
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={site.reviewsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="draw-link"
+                  >
+                    Google reviews
+                  </a>
+                </li>
+                <li>
+                  <a
                     href={site.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -573,16 +852,6 @@ export default function Home() {
                     className="draw-link"
                   >
                     Join the neighborhood WhatsApp group
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={site.toast}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="draw-link"
-                  >
-                    Order essentials on Toast
                   </a>
                 </li>
               </ul>

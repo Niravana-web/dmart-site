@@ -6,10 +6,11 @@ import { motion } from "motion/react";
 import { site } from "@/lib/site";
 
 const links = [
-  { href: "#counter", label: "The Counter" },
   { href: "#grocery", label: "Fresh & Grocery" },
-  { href: "#eid", label: "Eid Orders" },
+  { href: "#counter", label: "The Counter" },
+  { href: "#reviews", label: "Reviews" },
   { href: "#visit", label: "Visit Us" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export function Nav() {
@@ -52,7 +53,7 @@ export function Nav() {
           </span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <li key={l.href}>
               <a
@@ -70,9 +71,17 @@ export function Nav() {
             href={site.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-full bg-emerald-700 px-6 py-2.5 font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.08em] text-cream-50 transition-transform duration-300 hover:scale-[1.04] hover:bg-emerald-900 sm:inline-block"
+            className="hidden rounded-full border-2 border-emerald-700 px-5 py-2 font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.08em] text-emerald-900 transition-transform duration-300 hover:scale-[1.04] hover:bg-emerald-700/10 lg:inline-block"
           >
             WhatsApp Us
+          </a>
+          <a
+            href={site.toast}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden rounded-full bg-emerald-700 px-6 py-2.5 font-[family-name:var(--font-poppins)] text-xs font-semibold uppercase tracking-[0.08em] text-cream-50 transition-transform duration-300 hover:scale-[1.04] hover:bg-emerald-900 sm:inline-block"
+          >
+            Order Online
           </a>
           <button
             aria-label={open ? "Close menu" : "Open menu"}
@@ -107,10 +116,20 @@ export function Nav() {
                 </a>
               </li>
             ))}
-            <li>
+            <li className="flex flex-wrap gap-3">
+              <a
+                href={site.toast}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block rounded-full bg-emerald-700 px-6 py-3 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-wider text-cream-50"
+              >
+                Order Online
+              </a>
               <a
                 href={site.whatsapp}
-                className="inline-block rounded-full bg-emerald-700 px-6 py-3 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-wider text-cream-50"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block rounded-full border-2 border-emerald-700 px-6 py-3 font-[family-name:var(--font-poppins)] text-sm font-semibold uppercase tracking-wider text-emerald-900"
               >
                 WhatsApp Us
               </a>

@@ -53,29 +53,6 @@ export function Parallax({
   );
 }
 
-/** Hero image parallax + slow scale-in on load. */
-export function HeroImage({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden">
-      <motion.div
-        style={{ y, scale }}
-        initial={{ scale: 1.08, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.6, ease: EASE }}
-        className="absolute inset-0"
-      >
-        {children}
-      </motion.div>
-    </div>
-  );
-}
 
 /** Counts up from 0 when scrolled into view. */
 export function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
